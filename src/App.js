@@ -2,9 +2,28 @@ import React, { Component } from 'react';
 import List from './List';
 import TodoForm from './TodoForm';
 import Footer from './Footer';
+import Clock from './Clock';
+import Market from './Market';
 
 class App extends Component {
-  state = { todos: [], filter: 'All' }
+  state = {
+    todos: [],
+    filter: 'All',
+    showClock: false,
+    showMarket: false,
+  }
+
+  toggleShowMarket = () => {
+    this.setState( state => {
+      return { showMarket: !state.showMarket }
+    });
+  }
+
+  toggleShowClock = () => {
+    this.setState( state => {
+      return { showClock: !state.showClock }
+    });
+  }
 
   setFilter = (filter) => {
     this.setState({ filter })
@@ -60,9 +79,21 @@ class App extends Component {
   }
 
   render() {
-    const { todos, filter } = this.state;
+    const { filter, showClock, showMarket } = this.state;
     return (
       <div>
+        { showClock && <Clock /> }
+        <button
+          onClick={this.toggleShowClock}
+        >
+          Toggle Clock
+        </button>
+        { showMarket && <Market /> }
+        <button
+          onClick={this.toggleShowMarket}
+        >
+          Toggle Market
+        </button>
         <TodoForm addItem={this.addTodo}/>
         <List
           todoClick={this.handleClick}
