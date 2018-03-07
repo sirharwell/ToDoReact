@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
+import List from './List';
+import TodoForm from './TodoForm';
 
 class App extends Component {
   state = {
-    todos: [
-      { id: 1, name: 'Devin', complete: true },
-      { id: 3, name: 'present', complete: false },
-      { id: 2, name: 'is', complete: false },
-    ],
+    todos: [],
   }
 
   byName = (x,y) => {
@@ -17,16 +15,25 @@ class App extends Component {
     return 0
   }
 
+  getId = () => {
+    //NOTE We are just using this as a helper function for id's since we aren't using a db yet
+   return Math.floor((1 + Math.random()) * 0x10000)
+     .toString(16)
+     .substring(1);
+  }
+
+  addTodo = (name) => {
+    const { todos } = this.state;
+    const todo = { name, id: this.getId(), complete: false }
+    this.setState({ todos: [todo, ...todos] })
+  }
+
   render() {
     const { todos } = this.state;
     return (
       <div>
-        <ul>
-          { todos.sort(this.byName).map( (todo, i) => {
-              return <li key={todo.id}>{todo.name}</li>
-            })
-          }
-        </ul>
+        <TodoForm addItem={this.addTodo}/>
+        <List items={todos} />
       </div>
     );
   }
